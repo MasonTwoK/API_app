@@ -1,6 +1,7 @@
 from fastapi import FastAPI  # Here we import FastAPI class from \.venv\Lib\site-package\fastapi SOLVED
 from models import User, Gender, Role
 from typing import List
+from uuid import UUID
 
 # SOLVED
 # Q: What is going on here?
@@ -30,13 +31,18 @@ db: List[User] = [
 # A: @ is decorator. Video which explains it https://youtu.be/r7Dtus7N4pI
 @app.get("/")
 async def root(): # Q Read about async
-    return 200
+    return {"Hello": "World"}
 
 
 @app.get("/api/v1/users")  # Q: In which part of get users implements.. ?
-async def users():  # Q: Read about async https://fastapi.tiangolo.com/async/ ?
+async def fetch_users():  # Q: Read about async https://fastapi.tiangolo.com/async/ ?
     return db
 
+@app.get("/api/v1/users/{user_id}")
+async def fetch_user_by_id(user_id: UUID):
+    for user in db:
+        if user.id == user_id:
+            return user
 
 # Q: Take a close look..
 @app.post("/api/v1/users")
