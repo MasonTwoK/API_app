@@ -44,6 +44,15 @@ async def fetch_user_by_id(user_id: UUID):
         if user.id == user_id:
             return user
 
+
+@app.delete("/api/v1/users/{user_id}")
+async def delete_user_by_id(user_id: UUID):
+    for user in db:
+        if user.id == user_id:
+            db.remove(user)
+            return
+
+
 # Q: Take a close look..
 @app.post("/api/v1/users")
 async def registrate_user(user: User):
