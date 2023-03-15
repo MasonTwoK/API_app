@@ -1,4 +1,4 @@
-from fastapi import FastAPI  # Here we import FastAPI class from \.venv\Lib\site-package\fastapi SOLVED
+from fastapi import FastAPI, HTTPException  # Here we import FastAPI class from \.venv\Lib\site-package\fastapi SOLVED
 from models import User, Gender, Role
 from typing import List
 from uuid import UUID
@@ -51,10 +51,16 @@ async def delete_user_by_id(user_id: UUID):
         if user.id == user_id:
             db.remove(user)
             return
-
+        
+    # Q: How does raise work?
+    # Q: How can we just add 2 parameters into class with out creating instance? 
+    raise HTTPException( 
+        status_code=404,
+        detail=f"User with id: {user_id} does not exists"
+    )
 
 # Q: Take a close look..
 @app.post("/api/v1/users")
 async def registrate_user(user: User):
     db.append(user)
-    return {"id": user.id}  # Q: What is {} ?  
+    return {"id": user.id}  # Q: What is {} ? ..probably dictionary  
