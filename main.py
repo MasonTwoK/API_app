@@ -69,6 +69,7 @@ async def registrate_user(user: User):
     return {"id": user.id}  # Q: What is {} ? ..probably dictionary  
 
 
+# Q: Disocver difference between PATCH and PUT 
 @app.patch("/api/v1/users/{user_id}")
 async def update_id_data(user_id: UUID, patched_user: User):
     for user in db:
