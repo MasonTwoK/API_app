@@ -75,4 +75,4 @@ async def update_id_data(user_id: UUID, patched_user: User):
         if  user.id == user_id:
             db.remove(user)
             db.append(patched_user)
-            return  {"id": patched_user.id}  # ???
+            return  {"id": patched_user.id}
