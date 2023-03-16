@@ -38,6 +38,7 @@ async def root(): # Q Read about async
 async def fetch_users():  # Q: Read about async https://fastapi.tiangolo.com/async/ ?
     return db
 
+
 @app.get("/api/v1/users/{user_id}")
 async def fetch_user_by_id(user_id: UUID):
     for user in db:
@@ -51,6 +52,7 @@ async def delete_user_by_id(user_id: UUID):
         if user.id == user_id:
             db.remove(user)
             return
+        # Why if I put return out of if statement code block method will not return anything
         
     # Q: How does raise work?
     # Q: How can we just add 2 parameters into class with out creating instance? 
@@ -59,8 +61,18 @@ async def delete_user_by_id(user_id: UUID):
         detail=f"User with id: {user_id} does not exists"
     )
 
+
 # Q: Take a close look..
 @app.post("/api/v1/users")
 async def registrate_user(user: User):
     db.append(user)
     return {"id": user.id}  # Q: What is {} ? ..probably dictionary  
+
+
+@app.patch("/api/v1/users/{user_id}")
+async def update_id_data(user_id: UUID, patched_user: User):
+    for user in db:
+        if  user.id == user_id:
+            db.remove(user)
+            db.append(patched_user)
+            return  {"id": patched_user.id}  # ???
