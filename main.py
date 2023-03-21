@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException  # Here we import FastAPI class from \.venv\Lib\site-package\fastapi SOLVED
-from models import User, Gender, Role
+from models import User, Gender, Role, UserFieldsForUpdate
 from typing import List
 from uuid import UUID
 
@@ -25,7 +25,7 @@ db: List[User] = [
         roles=[Role.admin, Role.student]
     )
 ]
-
+    
 # SOLVED
 # Q: What is @ ?
 # A: @ is decorator. Video which explains it https://youtu.be/r7Dtus7N4pI
@@ -77,3 +77,30 @@ async def update_id_data(user_id: UUID, patched_user: User):
             db.remove(user)
             db.append(patched_user)
             return  {"id": patched_user.id}
+
+
+# To create PUT:
+# 1. Create class User_update_data
+# 2. Create method with put annotation
+# 3. Create logic in user_update_method
+# 4. Add raise exeption 404
+@app.put("/api/v1/users/{user_id}")
+async def update_user_fields(user_id: UUID, updated_fields: UserFieldsForUpdate):
+    for user in db:
+        if user.id == user_id:
+            if updated_fields.first_name is not None:
+                user.first_name = updated_fields.first_name
+            if updated_fields.last_name is not None:
+                user.last_name = updated_fields.last_name
+            if updated_fields.middle_name is not None:
+                user.middle_name = updated_fields.middle_name
+            if updated_fields.gender is not None:
+                user.gender = updated_fields.gender
+            if updated_fields.roles is not None:
+                user.roles = updated_fields.roles
+            return user
+    
+    raise HTTPException(
+        status_code=404,
+        detail=f"User {user_id} does not exist."
+    )

@@ -25,3 +25,10 @@ class User(BaseModel):
     middle_name: Optional[str]  # Q: How does optional works? A: Optional is class in lib/typing
     gender: Gender  # Why does Gender is not a list here?
     roles: List[Role]  # Why does Role is a list?
+
+class UserFieldsForUpdate(BaseModel):
+    first_name: str
+    last_name: str
+    middle_name: Optional[str]
+    gender: Gender
+    roles: List[Role]
