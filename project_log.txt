@@ -1,0 +1,3 @@
+Project Log
+
+03.04.23 - SQLite Integration
